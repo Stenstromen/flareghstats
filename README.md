@@ -7,8 +7,8 @@ Built as a serverless function using [Cloudflare Workers](https://workers.cloudf
 
 ### Endpoints
 
-`/lang/json?username=<username>` returns the stats of the most used languages by the user in JSON format.
-`/lang/svg?username=<username>` returns the stats of the most used languages by the user in SVG format.
+- `/lang/json?username=<username>` returns the stats of the most used languages by the user in JSON format.
+- `/lang/svg?username=<username>` returns the stats of the most used languages by the user in SVG format.
 
 ### Example Response
 
@@ -37,7 +37,6 @@ Built as a serverless function using [Cloudflare Workers](https://workers.cloudf
 ]
 ```
 
-
 `/lang/svg?username=anuraghazra`
 
 ![Example SVG](./examplesvg.png)
@@ -50,7 +49,7 @@ Built as a serverless function using [Cloudflare Workers](https://workers.cloudf
 - [Wrangler](https://developers.cloudflare.com/workers/cli-wrangler/install-update)
 - GitHub Personal Access Token
 
-### Dev 
+### Dev
 
 ```bash
 echo "GITHUB_TOKEN=<your_github_token>" > .dev.vars
