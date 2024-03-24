@@ -54,7 +54,7 @@ Built as a serverless function using [Cloudflare Workers](https://workers.cloudf
 ```bash
 echo "GITHUB_TOKEN=<your_github_token>" > .dev.vars
 npm install
-wrangler dev
+npm run dev
 curl http://localhost:8787/lang/json?username=anuraghazra
 ```
 
@@ -63,5 +63,5 @@ curl http://localhost:8787/lang/json?username=anuraghazra
 ```bash
 npm install
 wrangler secret put GITHUB_TOKEN
-wrangler publish
+npm run publish
 ```
