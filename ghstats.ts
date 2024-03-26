@@ -8,7 +8,137 @@ addEventListener("fetch", (event: FetchEvent) => {
  * @returns
  */
 
-import { GHJSONResponse, LanguagesArray, GHJSONResponseNodes, LanguageTotals } from "./types";
+import {
+  GHJSONResponse,
+  LanguagesArray,
+  GHJSONResponseNodes,
+  LanguageTotals,
+} from "./types";
+
+function getCurrentDateTime(): string {
+  const now = new Date();
+
+  const pad = (num: number): string => num.toString().padStart(2, "0");
+
+  const year = now.getUTCFullYear();
+  const month = pad(now.getUTCMonth() + 1);
+  const day = pad(now.getUTCDate());
+  const hours = pad(now.getUTCHours());
+  const minutes = pad(now.getUTCMinutes());
+  const seconds = pad(now.getUTCSeconds());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
+}
+
+async function getCreatedAt(username: string): Promise<string> {
+  const graphqlQuery = {
+    query: `
+      query GetUserCreatedAt($username: String!) {
+        user(login: $username) {
+          createdAt
+        }
+      }
+    `,
+    variables: {
+      username: username,
+    },
+  };
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "flareghstats",
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
+    },
+    body: JSON.stringify(graphqlQuery),
+  };
+
+  const response = await fetch("https://api.github.com/graphql", options);
+  const jsonResponse: any = await response.json();
+  const createdAt = jsonResponse.data.user.createdAt;
+
+  return createdAt;
+}
+
+async function getTotalContributionsAmount(username: string): Promise<number> {
+  const start = new Date(await getCreatedAt(username));
+  const end = new Date(getCurrentDateTime());
+  let currentYear = start.getFullYear();
+  let amount = 0;
+
+  while (currentYear <= end.getFullYear()) {
+    if (currentYear === start.getFullYear()) {
+      amount += await getTotalContributions(
+        username,
+        new Date(Date.UTC(currentYear, 11, 31, 23, 59, 59)).toISOString(),
+        start.toISOString()
+      );
+    } else if (currentYear === end.getFullYear()) {
+      amount += await getTotalContributions(
+        username,
+        end.toISOString(),
+        new Date(Date.UTC(currentYear, 0, 1)).toISOString()
+      );
+    } else {
+      amount += await getTotalContributions(
+        username,
+        new Date(Date.UTC(currentYear, 11, 31, 23, 59, 59)).toISOString(),
+        new Date(Date.UTC(currentYear, 0, 1)).toISOString()
+      );
+    }
+    currentYear++;
+  }
+
+  return amount;
+}
+
+async function getTotalContributions(
+  username: string,
+  dateNow: string,
+  dateCreated: string
+): Promise<any> {
+  const graphqlQuery = {
+    query: `
+      query GetUserContributions($username: String!, $dateNow: DateTime!, $dateCreated: DateTime!) {
+        user(login: $username) {
+          contributionsCollection(
+            from: $dateCreated
+            to: $dateNow
+          ) {
+            contributionCalendar {
+              totalContributions
+            }
+          }
+        }
+      }
+    `,
+    variables: {
+      username: username,
+      dateNow: dateNow,
+      dateCreated: dateCreated,
+    },
+  };
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "flareghstats",
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
+    },
+
+    body: JSON.stringify(graphqlQuery),
+  };
+
+  const response = await fetch("https://api.github.com/graphql", options);
+  const jsonResponse: any = await response.json();
+  const totalContributions =
+    jsonResponse.data.user.contributionsCollection.contributionCalendar
+      .totalContributions;
+
+  return totalContributions;
+}
 
 async function getLanguages(username: string): Promise<LanguagesArray[]> {
   const graphqlQuery = {
@@ -184,6 +314,25 @@ For usage, please refer to the README @ github.com/stenstromen/flareghstats
 
     return new Response(svgContent, {
       headers: { "content-type": "image/svg+xml" },
+    });
+  }
+
+  if (path === "/streak/json" && request.method === "GET") {
+    const username = searchParams.get("username");
+    if (!username) {
+      return new Response("Missing username", {
+        status: 400,
+        headers: { "content-type": "text/plain" },
+      });
+    }
+
+    const resp = {
+      createdAt: await getCreatedAt(username),
+      totalContributions: await getTotalContributionsAmount(username),
+    };
+
+    return new Response(JSON.stringify(resp), {
+      headers: { "content-type": "application/json" },
     });
   }
 
