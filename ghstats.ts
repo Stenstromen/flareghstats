@@ -313,7 +313,10 @@ For usage, please refer to the README @ github.com/stenstromen/flareghstats
     const svgContent = generateSVG(languagesArray);
 
     return new Response(svgContent, {
-      headers: { "content-type": "image/svg+xml" },
+      headers: {
+        "content-type": "image/svg+xml",
+        "Cache-Control": "no-cache, no-store, private, must-revalidate",
+      },
     });
   }
 
