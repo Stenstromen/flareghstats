@@ -191,6 +191,9 @@ async function getLanguages(username: string): Promise<LanguagesArray[]> {
         languageTotals[name] = { size: 0, color };
       }
 
+      /* const currentSize = languageTotals[name]?.size ?? 0;
+      languageTotals[name].size = currentSize + size; */
+
       languageTotals[name].size += size;
     });
   });
