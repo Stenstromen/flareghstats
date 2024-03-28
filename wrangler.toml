@@ -1,6 +1,6 @@
 name = "flareghstats"
 compatibility_date = "2023-08-07"
-main = "dist/ghstats.js"
+main = "dist/main.js"
 routes = [
     "https://gh.addr.se/*",
 ]

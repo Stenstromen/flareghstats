@@ -9,7 +9,6 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc && wrangler dev",
-    "minify": "jsmin -o dist/*.min.js dist/*.js",
     "publish": "tsc && wrangler publish"
   },
   "private": true

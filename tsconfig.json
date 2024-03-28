@@ -10,20 +10,20 @@
     "checkJs": false,
     "outDir": "./dist",
     "removeComments": true,
-    "noEmit": false,
+    "noEmit": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitAny": true, // Change me
-    "noImplicitThis": true, // Change me
-    "noImplicitReturns": true, // Change me
-    "noFallthroughCasesInSwitch": true, // Change me
-    "noUnusedLocals": true, // Change me
-    "noUnusedParameters": true, // Change me
-    "noImplicitOverride": true, // Change me
-    "noPropertyAccessFromIndexSignature": true, // Change me
-    "noUncheckedIndexedAccess": true, // Change me
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
     "skipLibCheck": true
   },
   "include": [
