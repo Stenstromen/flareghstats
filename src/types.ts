@@ -35,7 +35,6 @@ export interface GHJSONResponseNodes {
   };
 }
 
-
 export interface ContributionData {
   contributionCount: number;
   date: string;

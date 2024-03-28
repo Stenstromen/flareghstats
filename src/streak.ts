@@ -252,6 +252,8 @@ export function CalculateStreakDays(
     }
   }
 
+  console.log(streakDates)
+
   return {
     streakDays,
     streakStartDate: streakDates[streakDates.length - 1],

@@ -10,7 +10,7 @@
     "checkJs": false,
     "outDir": "./dist",
     "removeComments": true,
-    "noEmit": true,
+    "noEmit": false,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
