@@ -1,35 +1,35 @@
 {
   "compilerOptions": {
-    "target": "es2021",
-    "lib": ["es2021"],
-    "module": "es2022",
-    "moduleResolution": "node",
-    "types": ["@cloudflare/workers-types"],
-    "resolveJsonModule": true,
+    "strict": true,
     "allowJs": true,
     "checkJs": false,
+    "lib": ["es2021"],
     "outDir": "./dist",
-    "removeComments": true,
-    "noEmit": false,
-    "isolatedModules": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "module": "es2022",
+    "target": "es2021",
+    "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
+    "removeComments": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
     "noUnusedParameters": true,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
     "noUncheckedIndexedAccess": true,
-    "skipLibCheck": true
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": true,
+    "exactOptionalPropertyTypes": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": true,
+    "types": ["@cloudflare/workers-types"],
+    "forceConsistentCasingInFileNames": true,
+    "noPropertyAccessFromIndexSignature": true
   },
-  "include": [
-    "src/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/*.ts"],
+  "exclude": ["node_modules"]
 }

@@ -237,27 +237,48 @@ export function CalculateStreakDays(
 ): StreakData {
   let streakDays = 0;
   let skippedFirstZero = false;
-  let streakDates = [];
+  let currentStreak = 0;
+  let lastDate = new Date();
 
-  for (let i = contributionData.length - 1; i >= 0; i--) {
-    if (contributionData[i]!.contributionCount > 0) {
-      streakDays++;
-      streakDates.push(contributionData[i]?.date);
-    } else {
-      if (!skippedFirstZero) {
+  contributionData = contributionData.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  let streakStartDate: string | undefined = "";
+  let streakEndDate: string | undefined = contributionData[0]?.date;
+
+  for (let i = 0; i < contributionData.length; i++) {
+    const currentDate = new Date(contributionData[i]!.date);
+    const diff =
+      (lastDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+
+    if (
+      contributionData[i]!.contributionCount > 0 &&
+      (diff === 1 || diff === 0 || (diff === 2 && !skippedFirstZero))
+    ) {
+      currentStreak++;
+      if (diff === 2) {
         skippedFirstZero = true;
-        continue;
       }
+      if (currentStreak === 1) {
+        streakStartDate = contributionData[i]!.date;
+      }
+      streakDays = currentStreak;
+    } else if (contributionData[i]!.contributionCount > 0) {
+      currentStreak = 1;
+      skippedFirstZero = false;
+      streakStartDate = contributionData[i]!.date;
+    } else {
       break;
     }
-  }
 
-  console.log(streakDates)
+    lastDate = currentDate;
+  }
 
   return {
     streakDays,
-    streakStartDate: streakDates[streakDates.length - 1],
-    streakEndDate: streakDates[0],
+    streakStartDate: streakStartDate,
+    streakEndDate: streakEndDate,
   };
 }
 
