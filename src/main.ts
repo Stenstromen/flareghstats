@@ -6,6 +6,7 @@ import { GenerateLangSVG, GetLanguages } from "./lang";
 import {
   CalculateLongestStreak,
   CalculateStreakDays,
+  GenerateStreakSVG,
   GetContributionStreak,
   GetCreatedAt,
   GetTotalContributionsAmount,
@@ -92,6 +93,40 @@ For usage, please refer to the README @ github.com/stenstromen/flareghstats
 
     return new Response(JSON.stringify(resp), {
       headers: { "content-type": "application/json" },
+    });
+  }
+
+  if (path === "/streak/svg" && request.method === "GET") {
+    const username = searchParams.get("username");
+    if (!username) {
+      return new Response("Missing username", {
+        status: 400,
+        headers: { "content-type": "text/plain" },
+      });
+    }
+
+    const contributionStreak = await GetContributionStreak(username);
+    const streakDays = CalculateStreakDays(contributionStreak);
+    const longestStreak = CalculateLongestStreak(contributionStreak);
+
+    const resp = {
+      createdAt: await GetCreatedAt(username),
+      totalContributions: await GetTotalContributionsAmount(username),
+      streakDays: streakDays.streakDays,
+      streakStartDate: streakDays.streakStartDate,
+      streakEndDate: streakDays.streakEndDate,
+      longestStreakDays: longestStreak.longestStreakDays,
+      longestStreakStartDate: longestStreak.longestStreakStartDate,
+      longestStreakEndDate: longestStreak.longestStreakEndDate,
+    };
+
+    const svg = GenerateStreakSVG(resp);
+
+    return new Response(svg, {
+      headers: {
+        "content-type": "image/svg+xml",
+        "Cache-Control": "no-cache, no-store, private, must-revalidate",
+      },
     });
   }
 

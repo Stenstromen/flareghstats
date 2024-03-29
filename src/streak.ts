@@ -275,6 +275,10 @@ export function CalculateStreakDays(
     lastDate = currentDate;
   }
 
+  const startDate = new Date(streakEndDate!);
+  startDate.setDate(startDate.getDate() - streakDays + 1);
+  streakStartDate = startDate.toISOString().split("T")[0];
+
   return {
     streakDays,
     streakStartDate: streakStartDate,
@@ -309,9 +313,92 @@ export function CalculateLongestStreak(
 
   return {
     longestStreakDays: longestStreak,
-    longestStreakStartDate: longestStreakStartDate,
-    longestStreakEndDate: longestStreakEndDate,
+    longestStreakStartDate: longestStreakEndDate,
+    longestStreakEndDate: longestStreakStartDate,
   };
+}
+
+export function GenerateStreakSVG(data: {
+  totalContributions: number;
+  createdAt: string;
+  streakDays: number;
+  streakStartDate: string | undefined;
+  streakEndDate: string | undefined;
+  longestStreakDays: number;
+  longestStreakStartDate: string | undefined;
+  longestStreakEndDate: string | undefined;
+}): string {
+  const monthDayYear: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  const monthDay: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+  };
+
+  const createdAtNoTime = data.createdAt.split("T")[0];
+  const formatedCreatedAt = new Intl.DateTimeFormat(
+    "en-US",
+    monthDayYear
+  ).format(new Date(createdAtNoTime || ""));
+  const currentStreakStart = new Intl.DateTimeFormat("en-US", monthDay).format(
+    new Date(data.streakStartDate || "")
+  );
+  const currentStreakEnd = new Intl.DateTimeFormat("en-US", monthDay).format(
+    new Date(data.streakEndDate || "")
+  );
+  const longestStreakStart = new Intl.DateTimeFormat(
+    "en-US",
+    monthDayYear
+  ).format(new Date(data.longestStreakStartDate || ""));
+  const longestStreakEnd = new Intl.DateTimeFormat(
+    "en-US",
+    monthDayYear
+  ).format(new Date(data.longestStreakEndDate || ""));
+
+  const svgTemplate = `<svg xmlns="http://www.w3.org/2000/svg" style="isolation:isolate" viewBox="0 0 495 195">
+  <g style="isolation:isolate">
+    <rect width="494" height="194" x="10" y=".5" fill="#151515" rx="25"/>
+    <g stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" style="isolation:isolate" text-anchor="middle">
+      <text y="32" fill="#FEFEFE" font-size="28" font-weight="700" transform="translate(82.5 48)">
+                    ${data.totalContributions}
+                </text>
+      <text y="32" fill="#FEFEFE" font-size="14" font-weight="400" transform="translate(82.5 84)">
+                    Total Contributions
+                </text>
+      <text y="32" fill="#9E9E9E" font-size="12" font-weight="400" transform="translate(82.5 114)">
+                    ${formatedCreatedAt} - Present
+                </text>
+    </g>
+    <g style="isolation:isolate">
+      <text y="32" fill="#FEFEFE" stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" font-size="28" font-weight="700" text-anchor="middle" transform="translate(247.5 48)">
+                    ${data.streakDays}
+                </text>
+      <text y="32" fill="#11ab00" stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" font-size="14" font-weight="700" text-anchor="middle" transform="translate(247.5 108)">
+                    Current Streak
+                </text>
+      <text y="21" fill="#9E9E9E" stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" font-size="12" font-weight="400" text-anchor="middle" transform="translate(247.5 145)">
+                    ${currentStreakStart} - ${currentStreakEnd}
+                </text>
+      <circle cx="247.5" cy="71" r="40" fill="none" stroke="#11ab00" stroke-width="5"/>
+    </g>
+    <g stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" style="isolation:isolate" text-anchor="middle">
+      <text y="32" fill="#FEFEFE" font-size="28" font-weight="700" transform="translate(412.5 48)">
+                    ${data.longestStreakDays}
+                </text>
+      <text y="32" fill="#FEFEFE" font-size="14" font-weight="400" transform="translate(412.5 84)">
+                    Longest Streak
+                </text>
+      <text y="32" fill="#9E9E9E" font-size="12" font-weight="400" transform="translate(412.5 114)">
+                    ${longestStreakStart} - ${longestStreakEnd}
+                </text>
+    </g>
+  </g>
+</svg>`;
+
+  return svgTemplate;
 }
 
 declare const GITHUB_TOKEN: string;
