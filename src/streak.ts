@@ -358,43 +358,73 @@ export function GenerateStreakSVG(data: {
     monthDayYear
   ).format(new Date(data.longestStreakEndDate || ""));
 
-  const svgTemplate = `<svg xmlns="http://www.w3.org/2000/svg" style="isolation:isolate" viewBox="0 0 495 195">
-  <g style="isolation:isolate">
-    <rect width="494" height="194" x="10" y=".5" fill="#151515" rx="25"/>
-    <g stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" style="isolation:isolate" text-anchor="middle">
-      <text y="32" fill="#FEFEFE" font-size="28" font-weight="700" transform="translate(82.5 48)">
-                    ${data.totalContributions}
-                </text>
-      <text y="32" fill="#FEFEFE" font-size="14" font-weight="400" transform="translate(82.5 84)">
-                    Total Contributions
-                </text>
-      <text y="32" fill="#9E9E9E" font-size="12" font-weight="400" transform="translate(82.5 114)">
-                    ${formatedCreatedAt} - Present
-                </text>
-    </g>
-    <g style="isolation:isolate">
-      <text y="32" fill="#FEFEFE" stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" font-size="28" font-weight="700" text-anchor="middle" transform="translate(247.5 48)">
-                    ${data.streakDays}
-                </text>
-      <text y="32" fill="#11ab00" stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" font-size="14" font-weight="700" text-anchor="middle" transform="translate(247.5 108)">
-                    Current Streak
-                </text>
-      <text y="21" fill="#9E9E9E" stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" font-size="12" font-weight="400" text-anchor="middle" transform="translate(247.5 145)">
-                    ${currentStreakStart} - ${currentStreakEnd}
-                </text>
-      <circle cx="247.5" cy="71" r="40" fill="none" stroke="#11ab00" stroke-width="5"/>
-    </g>
-    <g stroke-width="0" font-family="&quot;Segoe UI&quot;, Ubuntu, sans-serif" style="isolation:isolate" text-anchor="middle">
-      <text y="32" fill="#FEFEFE" font-size="28" font-weight="700" transform="translate(412.5 48)">
-                    ${data.longestStreakDays}
-                </text>
-      <text y="32" fill="#FEFEFE" font-size="14" font-weight="400" transform="translate(412.5 84)">
-                    Longest Streak
-                </text>
-      <text y="32" fill="#9E9E9E" font-size="12" font-weight="400" transform="translate(412.5 114)">
-                    ${longestStreakStart} - ${longestStreakEnd}
-                </text>
-    </g>
+  const svgTemplate = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' style='isolation: isolate'
+  viewBox='0 0 495 195' height='190px' direction='ltr'>
+  <g style='isolation: isolate'>
+      <rect fill='#151515' rx='25' x='10' y='0.5' width='494' height='189' />
+      <g style='isolation: isolate'>
+          <g transform='translate(82.5,48)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#FEFEFE' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='700' font-size='28px' font-style='normal'>
+                  ${data.totalContributions}
+              </text>
+          </g>
+          <g transform='translate(82.5,84)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#FEFEFE' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='400' font-size='14px' font-style='normal'>
+                  Total Contributions
+              </text>
+          </g>
+          <g transform='translate(82.5,114)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#9E9E9E' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='400' font-size='12px' font-style='normal'>
+                  ${formatedCreatedAt} - Present
+              </text>
+          </g>
+      </g>
+      <g style='isolation: isolate'>
+          <g transform='translate(247.5,48)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#FEFEFE' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='700' font-size='28px' font-style='normal'>
+                  ${data.streakDays}
+              </text>
+          </g>
+          <g transform='translate(247.5,108)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#11ab00' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='700' font-size='14px' font-style='normal'>
+                  Current Streak
+              </text>
+          </g>
+          <g transform='translate(247.5,145)'>
+              <text x='0' y='21' stroke-width='0' text-anchor='middle' fill='#9E9E9E' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='400' font-size='12px' font-style='normal'>
+                  ${currentStreakStart} - ${currentStreakEnd}
+              </text>
+          </g>
+          <g>
+              <circle cx='247.5' cy='71' r='40' fill='none' stroke='#11ab00' stroke-width='5'></circle>
+          </g>
+      </g>
+      <g style='isolation: isolate'>
+          <g transform='translate(412.5,48)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#FEFEFE' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='700' font-size='28px' font-style='normal'>
+                  ${data.longestStreakDays}
+              </text>
+          </g>
+          <g transform='translate(412.5,84)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#FEFEFE' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='400' font-size='14px' font-style='normal'>
+                  Longest Streak
+              </text> 
+          </g>
+          <g transform='translate(412.5,114)'>
+              <text x='0' y='32' stroke-width='0' text-anchor='middle' fill='#9E9E9E' stroke='none'
+                  font-family='"Segoe UI", Ubuntu, sans-serif' font-weight='400' font-size='12px' font-style='normal'>
+                  ${longestStreakStart} - ${longestStreakEnd}
+              </text>
+          </g>
+      </g>
   </g>
 </svg>`;
 

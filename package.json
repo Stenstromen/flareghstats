@@ -4,12 +4,12 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230801.0",
     "typescript": "^5.1.6",
-    "wrangler": "3.38.0"
+    "wrangler": "3.41.0"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc && wrangler dev",
-    "publish": "tsc && wrangler publish"
+    "deploy": "tsc && wrangler deploy"
   },
   "private": true
 }
