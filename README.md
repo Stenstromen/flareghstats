@@ -1,5 +1,7 @@
 # FlareGHStats
 
+![logo](flareghstats_logo.webp)
+
 This is a simple tool to get the stats of a GitHub user.
 Built as a serverless function using [Cloudflare Workers](https://workers.cloudflare.com/).
 
@@ -9,6 +11,8 @@ Built as a serverless function using [Cloudflare Workers](https://workers.cloudf
 
 - `/lang/json?username=<username>` returns the stats of the most used languages by the user in JSON format.
 - `/lang/svg?username=<username>` returns the stats of the most used languages by the user in SVG format.
+- `/streak/json?username=<username>` returns the GitHub contribution streak of the user in JSON format.
+- `/streak/svg?username=<username>` returns the GitHub contribution streak of the user in SVG format.
 
 ### Example Response
 
@@ -41,6 +45,25 @@ Built as a serverless function using [Cloudflare Workers](https://workers.cloudf
 
 ![Example SVG](./examplesvg.png)
 
+`/streak/json?username=DenverCoder1`
+
+```json
+{
+  "createdAt": "2016-08-10T18:30:04Z",
+  "totalContributions": 14263,
+  "streakDays": 4,
+  "streakStartDate": "2024-03-26",
+  "streakEndDate": "2024-03-29",
+  "longestStreakDays": 109,
+  "longestStreakStartDate": "2021-05-21",
+  "longestStreakEndDate": "2021-09-06"
+}
+```
+
+`/streak/svg?username=DenverCoder1`
+
+![Example SVG](./examplestreak.png)
+
 ## Deploy
 
 ### Prerequisites
@@ -63,5 +86,5 @@ curl http://localhost:8787/lang/json?username=anuraghazra
 ```bash
 npm install
 wrangler secret put GITHUB_TOKEN
-npm run publish
+npm run deploy
 ```
