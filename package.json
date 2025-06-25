@@ -1,6 +1,6 @@
 {
   "name": "flareghstats",
-  "version": "v0.0.3",
+  "version": "v0.0.4",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250620.0",
     "typescript": "^5.8.3",
