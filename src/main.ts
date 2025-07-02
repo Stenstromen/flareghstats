@@ -11,6 +11,7 @@ import {
   GetCreatedAt,
   GetTotalContributionsAmount,
 } from "./streak";
+import { GetTotalStars, GenerateStarsSVG } from "./stars";
 /**
  *
  * @param {Request} request
@@ -121,6 +122,42 @@ For usage, please refer to the README @ github.com/stenstromen/flareghstats
     };
 
     const svg = GenerateStreakSVG(resp);
+
+    return new Response(svg, {
+      headers: {
+        "content-type": "image/svg+xml",
+        "Cache-Control": "no-cache, no-store, private, must-revalidate",
+      },
+    });
+  }
+
+  if (path === "/stars/json" && request.method === "GET") {
+    const username = searchParams.get("username");
+    if (!username) {
+      return new Response("Missing username", {
+        status: 400,
+        headers: { "content-type": "text/plain" },
+      });
+    }
+
+    const totalStars = await GetTotalStars(username);
+
+    return new Response(JSON.stringify({ totalStars }), {
+      headers: { "content-type": "application/json" },
+    });
+  }
+
+  if (path === "/stars/svg" && request.method === "GET") {
+    const username = searchParams.get("username");
+    if (!username) {
+      return new Response("Missing username", {
+        status: 400,
+        headers: { "content-type": "text/plain" },
+      });
+    }
+
+    const totalStars = await GetTotalStars(username);
+    const svg = GenerateStarsSVG(totalStars);
 
     return new Response(svg, {
       headers: {
