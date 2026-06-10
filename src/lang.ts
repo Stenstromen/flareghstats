@@ -43,8 +43,24 @@ export async function GetLanguages(
     body: JSON.stringify(graphqlQuery),
   };
 
+  if (!GITHUB_TOKEN) {
+    throw new Error("GITHUB_TOKEN is not configured");
+  }
+
   const response = await fetch("https://api.github.com/graphql", options);
-  const jsonResponse: GHJSONResponse = await response.json();
+  const jsonResponse = (await response.json()) as GHJSONResponse & {
+    message?: string;
+    errors?: { message: string }[];
+  };
+
+  if (!response.ok || !jsonResponse.data?.user) {
+    const reason =
+      jsonResponse.errors?.map((e) => e.message).join(", ") ??
+      jsonResponse.message ??
+      `GitHub API request failed with status ${response.status}`;
+    throw new Error(`Failed to fetch languages: ${reason}`);
+  }
+
   const nodes = jsonResponse.data.user.repositories.nodes;
 
   const languageTotals: LanguageTotals = {};
