@@ -2,7 +2,7 @@
   "name": "flareghstats",
   "version": "v0.1.3",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260609.1",
+    "@cloudflare/workers-types": "^4.20260629.1",
     "typescript": "^6.0.3",
     "wrangler": "4.99.0"
   },
